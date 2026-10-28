@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Şeftali Studio & Ağ Destek Merkezi</title>
+    <style>
+        :root {
+            --primary-color: #ff7675;
+            --secondary-color: #fab1a0;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #2d3436;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            box-sizing: border-box;
+            margin: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        p.subtitle {
+            text-align: center;
+            color: #636e72;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        select, input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dfe6e9;
+            border-radius: 8px;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        select:focus, input:focus, textarea:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 120px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #d63031;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #636e72;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        #success-message {
+            display: none;
+            background-color: #55efc4;
+            color: #00b894;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>🍑 Şeftali Studio & Ağ Destek</h2>
+        <p class="subtitle">Yaşadığın sorunu seç, detayları yaz, ekibimiz incelesin!</p>
+
+        <div id="success-message">Talebin başarıyla alındı! En kısa sürede incelenecektir.</div>
+
+        <form id="support-form">
+            <div class="form-group">
+                <label for="username">Oyun / Site Adın (Kullanıcı Adı):</label>
+                <input type="text" id="username" required placeholder="Örn: Patates_14">
+            </div>
+
+            <div class="form-group">
+                <label for="category">Destek Konusu / Kategori:</label>
+                <select id="category" required>
+                    <option value="" disabled selected>Lütfen bir konu seçin...</option>
+                    <option value="seftali-studio">🍑 Şeftali Studio (Web Sitesi / Mini Oyunlar)</option>
+                    <option value="patates-server">🥔 Patates Belediyesi (Kasa Açılımı / Ödül Sorunu)</option>
+                    <option value="mk-network">🌐 MK Network (Sunucu İçi Bug / Hata Bildirimi)</option>
+                    <option value="diger">💬 Diğer / Genel Konular</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Sorunun Detayı / Açıklaması:</label>
+                <textarea id="description" required placeholder="Örn: Kasayı açtım ama ödül envanterime gelmedi, ekran resmi şurada..."></textarea>
+            </div>
+
+            <button type="submit">Destek Talebi Gönder</button>
+        </form>
+
+        <a href="index.html" class="back-link">← Ana Sayfaya Geri Dön</a>
+    </div>
+
+    <script>
+        const form = document.getElementById('support-form');
+        const successMsg = document.getElementById('success-message');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // Sayfanın yenilenmesini engelle
+
+            // Verileri al
+            const username = document.getElementById('username').value;
+            const category = document.getElementById('category').value;
+            const description = document.getElementById('description').value;
+
+            // Burada verileri Discord Webhook'a gönderebilir veya localStorage ile tarayıcıda saklayabilirsin.
+            // Şimdilik kullanıcıya başarılı mesajı gösteriyoruz:
+            
+            form.style.display = 'none';
+            successMsg.style.display = 'block';
+
+            // İleride buraya Discord Webhook veya Formspree entegrasyonu ekleyebiliriz.
+        });
+    </script>
+
+</body>
+</html>
