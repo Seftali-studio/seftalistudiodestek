@@ -27,13 +27,30 @@
 
         .container {
             width: 100%;
-            max-width: 600px;
+            max-width: 650px;
             background: var(--card-bg);
             padding: 30px;
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             box-sizing: border-box;
             margin: 20px;
+            position: relative;
+        }
+
+        .nav-admin {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 13px;
+            color: var(--primary-color);
+            cursor: pointer;
+            font-weight: bold;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+        .nav-admin:hover {
+            text-decoration: underline;
         }
 
         h2 {
@@ -80,7 +97,7 @@
             height: 120px;
         }
 
-        button {
+        button.submit-btn {
             width: 100%;
             padding: 12px;
             background-color: var(--primary-color);
@@ -93,21 +110,8 @@
             transition: background 0.3s;
         }
 
-        button:hover {
+        button.submit-btn:hover {
             background-color: #d63031;
-        }
-
-        .back-link {
-            display: block;
-            text-align: center;
-            margin-top: 15px;
-            color: #636e72;
-            text-decoration: none;
-            font-size: 13px;
-        }
-
-        .back-link:hover {
-            text-decoration: underline;
         }
 
         #success-message {
@@ -120,65 +124,232 @@
             font-weight: bold;
             margin-bottom: 20px;
         }
+
+        /* Yetkili Paneli Stilleri */
+        .admin-panel, .login-panel {
+            display: none;
+        }
+
+        .ticket-card {
+            background: #f1f2f6;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .ticket-card h4 {
+            margin: 0 0 5px 0;
+            color: #2d3436;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .ticket-card span.category-tag {
+            font-size: 11px;
+            background: var(--secondary-color);
+            color: #2d3436;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .ticket-card p {
+            margin: 8px 0;
+            font-size: 14px;
+            color: #636e72;
+        }
+
+        .delete-btn {
+            background-color: #ff7675;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .delete-btn:hover {
+            background-color: #d63031;
+        }
+
+        .back-btn {
+            background-color: #636e72;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 15px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h2>🍑 Şeftali Studio & Ağ Destek</h2>
-        <p class="subtitle">Yaşadığın sorunu seç, detayları yaz, ekibimiz incelesin!</p>
+        <!-- Yetkili Giriş Butonu (Sağ Üst) -->
+        <button class="nav-admin" id="nav-admin-btn" onclick="showLoginPanel()">🔒 Yetkili Girişi</button>
 
-        <div id="success-message">Talebin başarıyla alındı! En kısa sürede incelenecektir.</div>
+        <!-- 1. KISIM: MÜŞTERİ DESTEK FORMU -->
+        <div id="user-view">
+            <h2>🍑 Şeftali Studio & Ağ Destek</h2>
+            <p class="subtitle">Yaşadığın sorunu seç, detayları yaz, ekibimiz incelesin!</p>
 
-        <form id="support-form">
+            <div id="success-message">Talebin başarıyla gönderildi ve kaydedildi!</div>
+
+            <form id="support-form">
+                <div class="form-group">
+                    <label for="username">Oyun / Site Adın (Kullanıcı Adı):</label>
+                    <input type="text" id="username" required placeholder="Örn: Patates_14">
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Destek Konusu / Kategori:</label>
+                    <select id="category" required>
+                        <option value="" disabled selected>Lütfen bir konu seçin...</option>
+                        <option value="🍑 Şeftali Studio">🍑 Şeftali Studio (Web Sitesi / Mini Oyunlar)</option>
+                        <option value="🥔 Patates Belediyesi">🥔 Patates Belediyesi (Kasa Açılımı / Ödül Sorunu)</option>
+                        <option value="🌐 MK Network">🌐 MK Network (Sunucu İçi Bug / Hata Bildirimi)</option>
+                        <option value="💬 Diğer Konular">💬 Diğer / Genel Konular</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Sorunun Detayı / Açıklaması:</label>
+                    <textarea id="description" required placeholder="Örn: Kasayı açtım ama ödül envanterime gelmedi..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Destek Talebi Gönder</button>
+            </form>
+        </div>
+
+        <!-- 2. KISIM: YETKİLİ GİRİŞ EKRANI -->
+        <div id="login-panel" class="login-panel">
+            <h2>🔑 Yetkili Girişi</h2>
+            <p class="subtitle">Talepleri görmek için şifreyi girin.</p>
             <div class="form-group">
-                <label for="username">Oyun / Site Adın (Kullanıcı Adı):</label>
-                <input type="text" id="username" required placeholder="Örn: Patates_14">
+                <label for="admin-password">Şifre:</label>
+                <input type="password" id="admin-password" placeholder="Şifrenizi girin">
+            </div>
+            <button class="submit-btn" onclick="checkPassword()">Giriş Yap</button>
+            <button class="back-btn" onclick="showUserView()">← Destek Formuna Dön</button>
+        </div>
+
+        <!-- 3. KISIM: YETKİLİ PANELİ (TALEP LİSTESİ) -->
+        <div id="admin-panel" class="admin-panel">
+            <h2>📋 Gelen Destek Talepleri</h2>
+            <p class="subtitle">Silmediğin sürece talepler burada saklanır.</p>
+            
+            <div id="ticket-list">
+                <!-- Talepler buraya dinamik olarak gelecek -->
             </div>
 
-            <div class="form-group">
-                <label for="category">Destek Konusu / Kategori:</label>
-                <select id="category" required>
-                    <option value="" disabled selected>Lütfen bir konu seçin...</option>
-                    <option value="seftali-studio">🍑 Şeftali Studio (Web Sitesi / Mini Oyunlar)</option>
-                    <option value="patates-server">🥔 Patates Belediyesi (Kasa Açılımı / Ödül Sorunu)</option>
-                    <option value="mk-network">🌐 MK Network (Sunucu İçi Bug / Hata Bildirimi)</option>
-                    <option value="diger">💬 Diğer / Genel Konular</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="description">Sorunun Detayı / Açıklaması:</label>
-                <textarea id="description" required placeholder="Örn: Kasayı açtım ama ödül envanterime gelmedi, ekran resmi şurada..."></textarea>
-            </div>
-
-            <button type="submit">Destek Talebi Gönder</button>
-        </form>
-
-        <a href="index.html" class="back-link">← Ana Sayfaya Geri Dön</a>
+            <button class="back-btn" onclick="showUserView()">← Form Ekranına Dön</button>
+        </div>
     </div>
 
     <script>
+        // Kendi yetkili şifreni buradan değiştirebilirsin!
+        const ADMIN_PASS = "12345"; 
+
         const form = document.getElementById('support-form');
         const successMsg = document.getElementById('success-message');
+        const userView = document.getElementById('user-view');
+        const loginPanel = document.getElementById('login-panel');
+        const adminPanel = document.getElementById('admin-panel');
+        const navAdminBtn = document.getElementById('nav-admin-btn');
 
+        // Form Gönderildiğinde
         form.addEventListener('submit', function(e) {
-            e.preventDefault(); // Sayfanın yenilenmesini engelle
+            e.preventDefault();
 
-            // Verileri al
-            const username = document.getElementById('username').value;
-            const category = document.getElementById('category').value;
-            const description = document.getElementById('description').value;
+            const newTicket = {
+                id: Date.now(),
+                username: document.getElementById('username').value,
+                category: document.getElementById('category').value,
+                description: document.getElementById('description').value,
+                date: new Date().toLocaleString('tr-TR')
+            };
 
-            // Burada verileri Discord Webhook'a gönderebilir veya localStorage ile tarayıcıda saklayabilirsin.
-            // Şimdilik kullanıcıya başarılı mesajı gösteriyoruz:
-            
-            form.style.display = 'none';
+            // Mevcut talepleri localStorage'dan al
+            let tickets = JSON.parse(localStorage.getItem('seftali_tickets')) || [];
+            tickets.push(newTicket);
+            localStorage.setItem('seftali_tickets', JSON.stringify(tickets));
+
+            // Formu temizle ve başarı mesajı göster
+            form.reset();
             successMsg.style.display = 'block';
-
-            // İleride buraya Discord Webhook veya Formspree entegrasyonu ekleyebiliriz.
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+            }, 4000);
         });
-    </script>
 
+        // Yetkili Giriş Ekranını Aç
+        function showLoginPanel() {
+            userView.style.display = 'none';
+            adminPanel.style.display = 'none';
+            loginPanel.style.display = 'block';
+            navAdminBtn.style.display = 'none';
+        }
+
+        // Şifre Kontrolü
+        function checkPassword() {
+            const passInput = document.getElementById('admin-password').value;
+            if (passInput === ADMIN_PASS) {
+                document.getElementById('admin-password').value = '';
+                loginPanel.style.display = 'none';
+                adminPanel.style.display = 'block';
+                loadTickets();
+            } else {
+                alert("Hatalı Şifre!");
+            }
+        }
+
+        // Normal Forma Dön
+        function showUserView() {
+            loginPanel.style.display = 'none';
+            adminPanel.style.display = 'none';
+            userView.style.display = 'block';
+            navAdminBtn.style.display = 'block';
+        }
+
+        // Talepleri Listele
+        function loadTickets() {
+            const ticketListContainer = document.getElementById('ticket-list');
+            let tickets = JSON.parse(localStorage.getItem('seftali_tickets')) || [];
+
+            if (tickets.length === 0) {
+                ticketListContainer.innerHTML = '<p style="text-align:center; color:#b2bec3;">Henüz hiç destek talebi yok.</p>';
+                return;
+            }
+
+            ticketListContainer.innerHTML = '';
+            tickets.forEach(ticket => {
+                const card = document.createElement('div');
+                card.className = 'ticket-card';
+                card.innerHTML = `
+                    <h4>
+                        ${ticket.username} 
+                        <span class="category-tag">${ticket.category}</span>
+                    </h4>
+                    <p><strong>Açıklama:</strong> ${ticket.description}</p>
+                    <p style="font-size: 11px; color: #b2bec3;">Tarih: ${ticket.date}</p>
+                    <button class="delete-btn" onclick="deleteTicket(${ticket.id})">Talebi Sil</button>
+                `;
+                ticketListContainer.appendChild(card);
+            });
+        }
+
+        // Talep Silme Fonksiyonu
+        function deleteTicket(id) {
+            let tickets = JSON.parse(localStorage.getItem('seftali_tickets')) || [];
+            tickets = tickets.filter(ticket => ticket.id !== id);
+            localStorage.setItem('seftali_tickets', JSON.stringify(tickets));
+            loadTickets(); // Listeyi yenile
+        }
+    </script>
 </body>
 </html>
